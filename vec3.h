@@ -1,8 +1,7 @@
 #ifndef VEC3_H
 #define VEC3_H
 
-#include <cmath>
-#include <iostream>
+#include "rtweekend.h"
 
 class vec3 {
     public:
@@ -54,6 +53,10 @@ inline std::ostream& operator<<(std::ostream& out, vec3 const& v){
 
 inline vec3 operator+(vec3 const& u, vec3 const& v){
     return vec3(u[0]+v[0], u[1]+v[1], u[2]+v[2]);
+}
+
+inline vec3 operator+(vec3 const& u, double t){
+    return vec3(u[0]+t, u[1]+t, u[2]+t);
 }
 
 inline vec3 operator-(vec3 const& u, vec3 const& v){
