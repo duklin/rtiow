@@ -1,12 +1,7 @@
-#include "rtweekend.h"
-
 #include "camera.h"
 #include "hittable.h"
 #include "hittable_list.h"
 #include "sphere.h"
-
-#include<iostream>
-
 
 int main(){
     hittable_list scene;
@@ -15,7 +10,8 @@ int main(){
 
     auto aspect_ratio = 16.0 / 9.0;
     int image_width = 400;
-    camera cam(aspect_ratio, image_width);    
+    size_t samples_per_pixel = 100;
+    camera cam(aspect_ratio, image_width, samples_per_pixel);    
 
     cam.render(scene);
 }
