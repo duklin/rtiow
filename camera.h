@@ -5,7 +5,7 @@
 
 class camera {
     public:
-        camera(double aspect_ratio, int image_width, size_t spp) : aspect_ratio(aspect_ratio), image_width(image_width), samples_per_pixel(spp) {
+        camera(double aspect_ratio, size_t image_width, size_t spp, size_t max_ray_bounces) : aspect_ratio(aspect_ratio), image_width(image_width), samples_per_pixel(spp), max_ray_bounces(max_ray_bounces) {
             image_height = int(image_width / aspect_ratio);
             image_height = (image_height < 1) ? 1 : image_height;
 
@@ -34,7 +34,7 @@ class camera {
                     color pixel_color(0, 0, 0);
                     for (size_t sample = 0; sample < samples_per_pixel; sample++){
                         ray r = get_ray(x, y);
-                        pixel_color += ray_color(r, scene);
+                        pixel_color += ray_color(r, max_ray_bounces, scene);
                     }
                     
                     write_color(std::cout, pixel_color * pixel_samples_weight);
@@ -45,20 +45,26 @@ class camera {
 
     private:
         double aspect_ratio;
-        int image_width;
-        int image_height;
+        size_t image_width;
+        size_t image_height;
         point3 center = vec3(0, 0, 0);
         point3 pixel00_loc;
         vec3 pixel_delta_u;
         vec3 pixel_delta_v;
         size_t samples_per_pixel;
         double pixel_samples_weight;
+        size_t max_ray_bounces;
 
-        color ray_color(ray const& r, hittable const& scene) const {
+        color ray_color(ray const& r, size_t bounces, hittable const& scene) const {
+            if (bounces <= 0)
+                return color(0, 0, 0);
+            
             hit_record rec;
 
-            if (scene.hit(r, interval(0, infinity), rec)){
-                return (rec.normal + 1) * 0.5;
+            if (scene.hit(r, interval(0.001, infinity), rec)){
+                vec3 direction = random_on_hemisphere(rec.normal);
+                ray bounced_ray(rec.p, direction);
+                return 0.5 * ray_color(bounced_ray, bounces-1, scene);
             }
 
             vec3 unit_direction = unit_vector(r.direction());

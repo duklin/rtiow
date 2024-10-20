@@ -9,9 +9,10 @@ int main(){
     scene.add(make_shared<sphere>(point3(0, -100.5, -1), 100));
 
     auto aspect_ratio = 16.0 / 9.0;
-    int image_width = 400;
+    size_t image_width = 400;
     size_t samples_per_pixel = 100;
-    camera cam(aspect_ratio, image_width, samples_per_pixel);    
+    size_t max_ray_bounces = 20;
+    camera cam(aspect_ratio, image_width, samples_per_pixel, max_ray_bounces);    
 
     cam.render(scene);
 }
