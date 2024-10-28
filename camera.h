@@ -62,7 +62,7 @@ class camera {
             hit_record rec;
 
             if (scene.hit(r, interval(0.001, infinity), rec)){
-                vec3 direction = random_on_hemisphere(rec.normal);
+                vec3 direction = rec.normal + random_unit_vector();
                 ray bounced_ray(rec.p, direction);
                 return 0.5 * ray_color(bounced_ray, bounces-1, scene);
             }
