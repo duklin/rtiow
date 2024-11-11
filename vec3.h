@@ -44,6 +44,11 @@ class vec3 {
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
 
+        bool near_zero() const {
+            auto s = 1e-8;
+            return (std::fabs(e[0]) < s) && (std::fabs(e[1]) < s) && (std::fabs(e[2]) < s);
+        }
+
         static vec3 random() {
             return vec3(random_double(), random_double(), random_double());
         }
@@ -116,6 +121,10 @@ inline vec3 random_on_hemisphere(vec3 const& normal) {
         return on_unit_sphere;
     else
         return -on_unit_sphere;
+}
+
+inline vec3 reflect(vec3 const& v, vec3 const& n) {
+    return v - 2*dot(v, n)*n;
 }
 
 #endif

@@ -3,12 +3,15 @@
 
 #include "rtweekend.h"
 
+class material;
+
 class hit_record {
     public:
         point3 p;
         double t;
         bool front_face;
         vec3 normal;
+        shared_ptr<material> mat;
 
         void set_face_normal(ray const& r, vec3 const& outward_normal){
             // Sets the hit record normal vector
